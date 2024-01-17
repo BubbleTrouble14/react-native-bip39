@@ -1,6 +1,6 @@
 #import "Bip39.h"
 
-#import "TypedArray.h"
+#import "../cpp/TypedArray.h"
 #import <React/RCTBridge+Private.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUtils.h>
