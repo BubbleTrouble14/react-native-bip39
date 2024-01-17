@@ -1,4 +1,4 @@
-# React Native bip39
+# React Native Bip39
 
 React Native implementation of [Bitcoin BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki). It's written in TypeScript and has direct bindings to a Bip39 C++ library. The primary function of this implementation is to provide mnemonic code for generating deterministic keys.
 
