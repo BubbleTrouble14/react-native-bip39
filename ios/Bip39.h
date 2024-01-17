@@ -1,5 +1,5 @@
 #ifdef __cplusplus
-#import "react-native-bip39.h"
+#import "JsiBip39.h"
 #endif
 
 #ifdef RCT_NEW_ARCH_ENABLED

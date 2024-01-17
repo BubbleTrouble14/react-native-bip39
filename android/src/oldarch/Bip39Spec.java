@@ -9,5 +9,5 @@ abstract class Bip39Spec extends ReactContextBaseJavaModule {
     super(context);
   }
 
-  public abstract void multiply(double a, double b, Promise promise);
+  public abstract boolean install();
 }

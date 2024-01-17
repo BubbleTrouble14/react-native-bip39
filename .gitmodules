@@ -1,0 +1,3 @@
+[submodule "bip39_cpp"]
+	path = bip39_cpp
+	url = https://github.com/mattxlee/bip39_cpp.git

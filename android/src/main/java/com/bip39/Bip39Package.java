@@ -4,9 +4,11 @@ import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.module.model.ReactModuleInfo;
 import com.facebook.react.module.model.ReactModuleInfoProvider;
 import com.facebook.react.TurboReactPackage;
+import com.facebook.react.turbomodule.core.interfaces.TurboModule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,18 +29,18 @@ public class Bip39Package extends TurboReactPackage {
   public ReactModuleInfoProvider getReactModuleInfoProvider() {
     return () -> {
       final Map<String, ReactModuleInfo> moduleInfos = new HashMap<>();
-      boolean isTurboModule = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
+      Class<? extends NativeModule> moduleClass = Bip39Module.class;
+      ReactModule reactModule = moduleClass.getAnnotation(ReactModule.class);
       moduleInfos.put(
-              Bip39Module.NAME,
+              reactModule.name(),
               new ReactModuleInfo(
-                      Bip39Module.NAME,
-                      Bip39Module.NAME,
-                      false, // canOverrideExistingModule
-                      false, // needsEagerInit
-                      true, // hasConstants
-                      false, // isCxxModule
-                      isTurboModule // isTurboModule
-      ));
+                  reactModule.name(),
+                  moduleClass.getName(),
+                  true,
+                  reactModule.needsEagerInit(),
+                  reactModule.hasConstants(),
+                  reactModule.isCxxModule(),
+                  TurboModule.class.isAssignableFrom(moduleClass)));
       return moduleInfos;
     };
   }
