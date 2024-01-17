@@ -1,7 +1,6 @@
 {
-  "name": "@bubble/react-native-bip39",
+  "name": "@ronickg/react-native-bip39",
   "version": "0.0.0",
-  "private": false,
   "description": "bip39",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

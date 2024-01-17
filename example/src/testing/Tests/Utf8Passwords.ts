@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { bip39 } from '@bubble/react-native-bip39';
+import { bip39 } from '@ronickg/react-native-bip39';
 import { describe, it } from '../MochaRNAdapter';
 import vectors from './vectors.json';
 

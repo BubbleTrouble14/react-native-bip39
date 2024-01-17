@@ -7,13 +7,13 @@ React Native implementation of [Bitcoin BIP39](https://github.com/bitcoin/bips/b
 To use this library in your React Native project, run the following command:
 
 ```sh
-yarn add @bubble/react-native-bip39
+yarn add @ronickg/react-native-bip39
 ```
 
 or
 
 ```sh
-npm install @bubble/react-native-bip39
+npm install @ronickg/react-native-bip39
 ```
 
 ## Example

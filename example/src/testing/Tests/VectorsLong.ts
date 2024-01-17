@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { describe, it } from '../MochaRNAdapter';
-import type { WordLists } from '@bubble/react-native-bip39';
-import { bip39 } from '@bubble/react-native-bip39';
+import type { WordLists } from '@ronickg/react-native-bip39';
+import { bip39 } from '@ronickg/react-native-bip39';
 import vectors from './vectors.json';
 import vectors1 from './vectors1.json';
 

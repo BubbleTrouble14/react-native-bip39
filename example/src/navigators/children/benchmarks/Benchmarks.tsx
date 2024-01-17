@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import type { RootStackParamList } from '../../RootProps';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { bip39 } from '@bubble/react-native-bip39';
+import { bip39 } from '@ronickg/react-native-bip39';
 
 // function getTime(f: () => void): number {
 //   const before = global.performance.now();
