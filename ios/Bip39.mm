@@ -38,10 +38,10 @@ void installApi(std::shared_ptr<facebook::react::CallInvoker> callInvoker,
 
   // Adds the PropNameIDCache object to the Runtime. If the Runtime gets
   // destroyed, the Object gets destroyed and the cache gets invalidated.
-  auto propNameIdCache = std::make_shared<InvalidateCacheOnDestroy>(runtime);
-  runtime.global().setProperty(
-      runtime, "bip39PropNameIdCache",
-      jsi::Object::createFromHostObject(runtime, propNameIdCache));
+  auto propNameIdCache = std::make_shared<InvalidateCacheOnDestroy>(jsiRuntime);
+  jsiRuntime.global().setProperty(
+      jsiRuntime, "bip39PropNameIdCache",
+      jsi::Object::createFromHostObject(jsiRuntime, propNameIdCache));
 }
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
