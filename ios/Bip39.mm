@@ -1,10 +1,10 @@
 #import "Bip39.h"
 
+#import "TypedArray.h"
 #import <React/RCTBridge+Private.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUtils.h>
 #import <ReactCommon/RCTTurboModule.h>
-#import "TypedArray.h"
 
 @implementation Bip39
 

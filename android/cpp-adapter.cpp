@@ -4,12 +4,12 @@
 #include <jsi/jsi.h>
 
 #include "JsiBip39.h"
+#include "TypedArray.h"
 #include "bit_opts.h"
 #include "langs.h"
 #include "mnemonic.h"
 #include "random.h"
 #include "toolbox.h"
-#include "TypedArray.h"
 
 using namespace facebook; // NOLINT
 
