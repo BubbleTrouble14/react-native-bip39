@@ -4,6 +4,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTUtils.h>
 #import <ReactCommon/RCTTurboModule.h>
+#import "TypedArray.h"
 
 @implementation Bip39
 
@@ -11,36 +12,36 @@
 
 RCT_EXPORT_MODULE()
 
-// - (void)invalidate {
-//   RNWorklet::JsiWorkletContext::invalidateDefaultInstance();
-//   RNWorklet::JsiWorkletApi::invalidateInstance();
-//   _bridge = nil;
-// }
-
-// - (void)setBridge:(RCTBridge *)bridge {
-//   _bridge = bridge;
-// }
-
-// + (BOOL)requiresMainQueueSetup {
-//   return YES;
-// }
+- (void)setBridge:(RCTBridge *)bridge {
+  _bridge = bridge;
+}
 
 void installApi(std::shared_ptr<facebook::react::CallInvoker> callInvoker,
                 facebook::jsi::Runtime &jsiRuntime) {
 
-    auto createBip39Instance = jsi::Function::createFromHostFunction(jsiRuntime,
-        jsi::PropNameID::forAscii(jsiRuntime, "createBip39Instance"), 0,
-        [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
-            size_t count) -> jsi::Value {
-            if (count != 0) {
-                throw jsi::JSError(runtime, "Bip39.createNewInstance(..) expects 0 arguments!");
-            }
+  auto createBip39Instance = jsi::Function::createFromHostFunction(
+      jsiRuntime, jsi::PropNameID::forAscii(jsiRuntime, "createBip39Instance"),
+      0,
+      [](jsi::Runtime &runtime, const jsi::Value &thisValue,
+         const jsi::Value *arguments, size_t count) -> jsi::Value {
+        if (count != 0) {
+          throw jsi::JSError(
+              runtime, "Bip39.createNewInstance(..) expects 0 arguments!");
+        }
 
-            auto instance = std::make_shared<JsiBip39>();
-            return jsi::Object::createFromHostObject(runtime, instance);
-        });
+        auto instance = std::make_shared<JsiBip39>();
+        return jsi::Object::createFromHostObject(runtime, instance);
+      });
 
-    jsiRuntime.global().setProperty(jsiRuntime, "createBip39Instance", std::move(createBip39Instance));
+  jsiRuntime.global().setProperty(jsiRuntime, "createBip39Instance",
+                                  std::move(createBip39Instance));
+
+  // Adds the PropNameIDCache object to the Runtime. If the Runtime gets
+  // destroyed, the Object gets destroyed and the cache gets invalidated.
+  auto propNameIdCache = std::make_shared<InvalidateCacheOnDestroy>(runtime);
+  runtime.global().setProperty(
+      runtime, "bip39PropNameIdCache",
+      jsi::Object::createFromHostObject(runtime, propNameIdCache));
 }
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
@@ -50,7 +51,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
     facebook::jsi::Runtime *jsRuntime =
         (facebook::jsi::Runtime *)cxxBridge.runtime;
 
-    auto& runtime = *jsRuntime;
+    auto &runtime = *jsRuntime;
 
     installApi(callInvoker, runtime);
     return @true;
@@ -68,7 +69,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
   facebook::jsi::Runtime *jsRuntime =
       (facebook::jsi::Runtime *)cxxBridge.runtime;
 
-  auto& runtime = *jsRuntime;
+  auto &runtime = *jsRuntime;
 
   installApi(callInvoker, runtime);
 

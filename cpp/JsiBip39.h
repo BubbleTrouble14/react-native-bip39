@@ -17,7 +17,7 @@
 namespace jsi = facebook::jsi;
 
 class JsiBip39 : public jsi::HostObject {
- public:
+public:
   JsiBip39();
   ~JsiBip39();
 

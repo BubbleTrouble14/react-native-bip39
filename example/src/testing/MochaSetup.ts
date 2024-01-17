@@ -2,6 +2,7 @@ import 'mocha';
 import type * as MochaTypes from 'mocha';
 import type { RowItemType } from '../navigators/children/TestingScreen/RowItemType';
 import { clearTests, rootSuite } from './MochaRNAdapter';
+import { Alert } from 'react-native';
 
 export function testLib(
   addTestResult: (testResult: RowItemType) => void,
@@ -22,6 +23,9 @@ export function testLib(
   var runner = new Mocha.Runner(rootSuite) as MochaTypes.Runner;
 
   let indents = -1;
+  // Initialize counters
+  let passCount = 0;
+  let failCount = 0;
   const indent = () => Array(indents).join('  ');
   runner
     .once(EVENT_RUN_BEGIN, () => {})
@@ -47,6 +51,7 @@ export function testLib(
         key: Math.random().toString(),
         type: 'correct',
       });
+      passCount++;
       console.log(`${indent()}pass: ${test.fullTitle()}`);
     })
     .on(EVENT_TEST_FAIL, (test: MochaTypes.Runnable, err: Error) => {
@@ -57,11 +62,21 @@ export function testLib(
         type: 'incorrect',
         errorMsg: err.message,
       });
+      failCount++;
       console.log(
         `${indent()}fail: ${test.fullTitle()} - error: ${err.message}`
       );
     })
-    .once(EVENT_RUN_END, () => {});
+    .once(EVENT_RUN_END, () => {
+      Alert.alert(
+        'Test Results Summary',
+        `Passed: ${passCount}\nFailed: ${failCount}`,
+        [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
+      );
+      console.log(
+        `Tests completed. Passed: ${passCount}, Failed: ${failCount}`
+      );
+    });
 
   testRegistrators.forEach((register) => {
     register();

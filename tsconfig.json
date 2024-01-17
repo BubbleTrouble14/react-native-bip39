@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "react-native-bip39": ["./src/index"]
+      "@bubble/react-native-bip39": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

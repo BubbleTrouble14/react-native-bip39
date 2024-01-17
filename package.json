@@ -1,5 +1,5 @@
 {
-  "name": "react-native-bip39",
+  "name": "@bubble/react-native-bip39",
   "version": "0.1.0",
   "description": "bip39",
   "main": "lib/commonjs/index",
@@ -32,7 +32,13 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
-    "release": "release-it"
+    "release": "release-it",
+    "bootstrap": "yarn example && yarn install && yarn example pods",
+    "clang-format": "yarn clang-format-ios && yarn clang-format-android && yarn clang-format-common",
+    "clang-format-ios": "find ios/ -iname '*.h' -o -iname '*.m' -o -iname '*.mm' -o -iname '*.cpp' | xargs clang-format -i",
+    "clang-format-android": "find android/ -iname '*.h' -o -iname '*.m' -o -iname '*.mm' -o -iname '*.cpp' | xargs clang-format -i",
+    "clang-format-common": "find cpp/ -iname '*.h' -o -iname '*.m' -o -iname '*.mm' -o -iname '*.cpp' | xargs clang-format -i",
+    "cpplint": "cpplint --linelength=230 --filter=-legal/copyright,-whitespace/indent,-whitespace/comments,-whitespace/ending_newline,-build/include_order,-runtime/references,-readability/todo,-whitespace/blank_line,-whitespace/todo,-runtime/int,-build/c++11,-whitespace/parens --exclude=./node_modules --recursive cpp"
   },
   "keywords": [
     "react-native",
@@ -58,6 +64,7 @@
     "@types/jest": "^28.1.2",
     "@types/react": "~17.0.21",
     "@types/react-native": "0.70.0",
+    "clang-format": "^1.8.0",
     "commitlint": "^17.0.2",
     "del-cli": "^5.0.0",
     "eslint": "^8.4.1",

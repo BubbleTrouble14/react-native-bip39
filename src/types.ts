@@ -84,9 +84,3 @@ class Bip39 {
 
 export type { WordCount, WordLists };
 export { Bip39 as bip39 };
-// export { Bip39 };
-// declare global {
-//   var Bip39: Bip39;
-// }
-
-// export const { Bip39 } = globalThis;

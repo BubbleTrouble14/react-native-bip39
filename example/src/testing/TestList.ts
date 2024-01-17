@@ -2,13 +2,19 @@ import type { TestItemType } from '../navigators/children/Entry/TestItemType';
 import { registerInvalidEntropy } from './Tests/InvalidEntropy';
 import { registerUtf8Passwords } from './Tests/Utf8Passwords';
 import { registerValidateMnemonic } from './Tests/ValidateMnemonic';
-import { registerWordListTests } from './Tests/Vectors';
+import { registerVectorsLong } from './Tests/VectorsLong';
+import { registerVectorsShort } from './Tests/VectorsShort';
 
 export const TEST_LIST: Array<TestItemType> = [
   {
-    description: 'vector',
+    description: 'vector (short)',
     value: true,
-    registrator: registerWordListTests,
+    registrator: registerVectorsShort,
+  },
+  {
+    description: 'vector (long)',
+    value: false,
+    registrator: registerVectorsLong,
   },
   {
     description: 'invalid entropy',

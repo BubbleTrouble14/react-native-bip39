@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Checkbox from '@react-native-community/checkbox';
+// import Checkbox from '@react-native-community/checkbox';
+import { Checkbox } from 'react-native-ui-lib';
 
 type TestItemProps = {
   description: string;
