@@ -24,7 +24,7 @@ RCT_EXPORT_MODULE()
   return YES;
 }
 
-void installApi(std::shared_ptr<facebook::react::CallInvoker> callInvoker,
+void installBip39Api(std::shared_ptr<facebook::react::CallInvoker> callInvoker,
                 facebook::jsi::Runtime *runtime) {
 
   // Install the bip39 API
@@ -38,7 +38,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
     facebook::jsi::Runtime *jsRuntime =
         (facebook::jsi::Runtime *)cxxBridge.runtime;
 
-    installApi(callInvoker, jsRuntime);
+    installBip39Api(callInvoker, jsRuntime);
 
     return @true;
   }
@@ -55,7 +55,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
   facebook::jsi::Runtime *jsRuntime =
       (facebook::jsi::Runtime *)cxxBridge.runtime;
 
-  installApi(callInvoker, jsRuntime);
+  installBip39Api(callInvoker, jsRuntime);
 
   return std::make_shared<facebook::react::NativeBip39SpecJSI>(params);
 }
