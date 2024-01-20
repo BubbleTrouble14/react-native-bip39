@@ -1,5 +1,5 @@
 #ifdef __cplusplus
-#import "JsiBip39.h"
+#import "JsiBip39Api.h"
 #endif
 
 #ifdef RCT_NEW_ARCH_ENABLED

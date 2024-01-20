@@ -1,6 +1,5 @@
 #import "Bip39.h"
 
-#import "../cpp/TypedArray.h"
 #import <React/RCTBridge+Private.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUtils.h>
@@ -12,36 +11,20 @@
 
 RCT_EXPORT_MODULE()
 
+- (void)invalidate {
+  RNBip39::JsiBip39Api::invalidateInstance();
+  _bridge = nil;
+}
+
 - (void)setBridge:(RCTBridge *)bridge {
   _bridge = bridge;
 }
 
 void installApi(std::shared_ptr<facebook::react::CallInvoker> callInvoker,
-                facebook::jsi::Runtime &jsiRuntime) {
+                facebook::jsi::Runtime *runtime) {
 
-  auto createBip39Instance = jsi::Function::createFromHostFunction(
-      jsiRuntime, jsi::PropNameID::forAscii(jsiRuntime, "createBip39Instance"),
-      0,
-      [](jsi::Runtime &runtime, const jsi::Value &thisValue,
-         const jsi::Value *arguments, size_t count) -> jsi::Value {
-        if (count != 0) {
-          throw jsi::JSError(
-              runtime, "Bip39.createNewInstance(..) expects 0 arguments!");
-        }
-
-        auto instance = std::make_shared<JsiBip39>();
-        return jsi::Object::createFromHostObject(runtime, instance);
-      });
-
-  jsiRuntime.global().setProperty(jsiRuntime, "createBip39Instance",
-                                  std::move(createBip39Instance));
-
-  // Adds the PropNameIDCache object to the Runtime. If the Runtime gets
-  // destroyed, the Object gets destroyed and the cache gets invalidated.
-  auto propNameIdCache = std::make_shared<InvalidateCacheOnDestroy>(jsiRuntime);
-  jsiRuntime.global().setProperty(
-      jsiRuntime, "bip39PropNameIdCache",
-      jsi::Object::createFromHostObject(jsiRuntime, propNameIdCache));
+  // Install the bip39 API
+  RNBip39::JsiBip39Api::installApi(*runtime);
 }
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
@@ -51,9 +34,8 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
     facebook::jsi::Runtime *jsRuntime =
         (facebook::jsi::Runtime *)cxxBridge.runtime;
 
-    auto &runtime = *jsRuntime;
+    installApi(callInvoker, jsRuntime);
 
-    installApi(callInvoker, runtime);
     return @true;
   }
   return @false;
@@ -69,9 +51,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
   facebook::jsi::Runtime *jsRuntime =
       (facebook::jsi::Runtime *)cxxBridge.runtime;
 
-  auto &runtime = *jsRuntime;
-
-  installApi(callInvoker, runtime);
+  installApi(callInvoker, jsRuntime);
 
   return std::make_shared<facebook::react::NativeBip39SpecJSI>(params);
 }
