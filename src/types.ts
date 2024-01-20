@@ -84,3 +84,15 @@ class Bip39 {
 
 export type { WordCount, WordLists };
 export { Bip39 as bip39 };
+
+export interface ITestObject {
+  getDefaultWordlist: () => string;
+  setDefaultWordlist: (value: string) => void;
+  mnemonicToSeed: (mnemonic: string, password?: string) => Uint8Array;
+}
+
+declare global {
+  var TestApi: ITestObject;
+}
+
+export const { TestApi } = globalThis;

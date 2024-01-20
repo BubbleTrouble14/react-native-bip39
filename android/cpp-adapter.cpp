@@ -11,15 +11,20 @@
 #include "random.h"
 #include "toolbox.h"
 
+#include "TestObject.h"
+
 using namespace facebook; // NOLINT
 
-void install(jsi::Runtime &jsiRuntime) {
+void install(jsi::Runtime &jsiRuntime)
+{
   auto createBip39Instance = jsi::Function::createFromHostFunction(
       jsiRuntime, jsi::PropNameID::forAscii(jsiRuntime, "createBip39Instance"),
       0,
       [](jsi::Runtime &runtime, const jsi::Value &thisValue,
-         const jsi::Value *arguments, size_t count) -> jsi::Value {
-        if (count != 0) {
+         const jsi::Value *arguments, size_t count) -> jsi::Value
+      {
+        if (count != 0)
+        {
           throw jsi::JSError(
               runtime, "Bip39.createNewInstance(..) expects 0 arguments!");
         }
@@ -41,7 +46,8 @@ void install(jsi::Runtime &jsiRuntime) {
 }
 
 extern "C" JNIEXPORT jboolean JNICALL Java_com_bip39_Bip39Module_nativeInstall(
-    JNIEnv *env, jclass obj, jlong jsiRuntimeRef, jobject jsCallInvokerHolder) {
+    JNIEnv *env, jclass obj, jlong jsiRuntimeRef, jobject jsCallInvokerHolder)
+{
   auto jsiRuntime{reinterpret_cast<jsi::Runtime *>(jsiRuntimeRef)};
   auto jsCallInvoker{jni::alias_ref<react::CallInvokerHolder::javaobject>{
       reinterpret_cast<react::CallInvokerHolder::javaobject>(
@@ -49,6 +55,13 @@ extern "C" JNIEXPORT jboolean JNICALL Java_com_bip39_Bip39Module_nativeInstall(
                          ->getCallInvoker()};
 
   install(*jsiRuntime);
+
+  // RNJsi::JsiTestContext::getDefaultInstance()->initialize(
+  //     "default", jsiRuntime, [=](std::function<void()> &&f)
+  //     { jsCallInvoker->invokeAsync(std::move(f)); });
+
+  // Install the worklet API
+  RNTest::JsiTestApi::installApi(*jsiRuntime);
 
   return true;
 }

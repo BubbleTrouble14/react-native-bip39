@@ -9,11 +9,16 @@ const Bip39Installer = TurboModuleRegistry.getEnforcing<Spec>('Bip39');
 
 console.log('Loading react-native-bip39...');
 
-declare global {
-  var Bip39: any;
-}
+// export interface TestObject {
+//   width: number;
+// }
 
-if (global.Bip39 === undefined || global.Bip39 == null) {
+// declare global {
+//   var Bip39: TestObject;
+//   var TestApi: TestObject;
+// }
+
+if (global.TestApi === undefined || global.TestApi == null) {
   if (Bip39Installer == null || typeof Bip39Installer.install !== 'function') {
     console.error(
       'Native Bip39 Module cannot be found! Make sure you correctly ' +
