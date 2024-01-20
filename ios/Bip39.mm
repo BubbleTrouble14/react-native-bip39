@@ -20,6 +20,10 @@ RCT_EXPORT_MODULE()
   _bridge = bridge;
 }
 
++ (BOOL)requiresMainQueueSetup {
+  return YES;
+}
+
 void installApi(std::shared_ptr<facebook::react::CallInvoker> callInvoker,
                 facebook::jsi::Runtime *runtime) {
 

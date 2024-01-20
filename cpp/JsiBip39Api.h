@@ -61,15 +61,6 @@ static std::string HexStr(const std::vector<uint8_t>& data) {
   return s.str();
 }
 
-// std::vector<uint8_t> intToVector(uint32_t value) {
-//   std::vector<uint8_t> bytes;
-//   for (size_t i = 0; i < sizeof(value); ++i) {
-//     // Shift the integer's bits to the right and get the lowest byte.
-//     bytes.push_back((value >> (i * 8)) & 0xFF);
-//   }
-//   return bytes;
-// }
-
 class JsiBip39Api : public RNJsi::JsiHostObject {
 public:
   static const char* Bip39Name;
@@ -281,7 +272,7 @@ public:
   JSI_HOST_FUNCTION(mnemonicToSeed) {
     auto [mnemonics, password] = processMnemonicAndPasswordArguments(runtime, arguments, count);
 
-    auto seed = bip39::Mnemonic::CreateSeed(mnemonics, password);
+    auto seed = bip39::Mnemonic::CreateSeedFromMnemonic(mnemonics, password);
     auto byteArray = TypedArray<TypedArrayKind::Uint8Array>(runtime, seed.size());
     auto arrayBuffer = byteArray.getBuffer(runtime);
     memcpy(arrayBuffer.data(runtime), seed.data(), seed.size());
@@ -293,7 +284,7 @@ public:
   JSI_HOST_FUNCTION(mnemonicToSeedHex) {
     auto [mnemonics, password] = processMnemonicAndPasswordArguments(runtime, arguments, count);
 
-    auto seed = bip39::Mnemonic::CreateSeed(mnemonics, password);
+    auto seed = bip39::Mnemonic::CreateSeedFromMnemonic(mnemonics, password);
     auto seedHex = HexStr(seed);
 
     return jsi::String::createFromUtf8(runtime, seedHex);

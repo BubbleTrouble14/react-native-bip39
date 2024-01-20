@@ -1875,6 +1875,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@craftzdog/react-native-buffer@npm:^6.0.5":
+  version: 6.0.5
+  resolution: "@craftzdog/react-native-buffer@npm:6.0.5"
+  dependencies:
+    ieee754: ^1.2.1
+    react-native-quick-base64: ^2.0.5
+  checksum: 921b8bc7f84778e355e81e475792399276d611a346a7e51b6266a45cf4aa82194beb3a8106af796ed143d958c8476070c59e3720c0eec0a3c31e368fbb08b350
+  languageName: node
+  linkType: hard
+
 "@cspotcode/source-map-support@npm:^0.8.0":
   version: 0.8.1
   resolution: "@cspotcode/source-map-support@npm:0.8.1"
@@ -11412,6 +11422,7 @@ __metadata:
     "@babel/core": ^7.20.0
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
+    "@craftzdog/react-native-buffer": ^6.0.5
     "@react-native/babel-preset": 0.73.19
     "@react-native/metro-config": 0.73.3
     "@react-native/typescript-config": 0.73.1
@@ -11428,6 +11439,7 @@ __metadata:
     react: 18.2.0
     react-native: 0.73.2
     react-native-gesture-handler: ^2.14.1
+    react-native-quick-base64: ^2.0.8
     react-native-reanimated: ^3.6.1
     react-native-safe-area-context: ^4.8.2
     react-native-screens: ^3.29.0
@@ -11483,6 +11495,18 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: a037e8c5a88a9fc79c283f3064d7653ec8615cb05fc62622eaccb5f3db489ede9c3a0685b7aad210c7efabfd8f5aa34e4f19204318dfda64c8829266d78e0cae
+  languageName: node
+  linkType: hard
+
+"react-native-quick-base64@npm:^2.0.5, react-native-quick-base64@npm:^2.0.8":
+  version: 2.0.8
+  resolution: "react-native-quick-base64@npm:2.0.8"
+  dependencies:
+    base64-js: ^1.5.1
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 2634f007d5c7b931ebd9b2fe337037dd7d15dbcde4cfb974d703b9f2705a0b892542536a2b4cd125fb5d4c6e08c0901f052c900bd370786a9f3a46fe171efc5f
   languageName: node
   linkType: hard
 

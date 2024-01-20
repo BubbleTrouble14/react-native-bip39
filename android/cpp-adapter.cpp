@@ -14,8 +14,7 @@
 using namespace facebook; // NOLINT
 
 extern "C" JNIEXPORT jboolean JNICALL Java_com_bip39_Bip39Module_nativeInstall(
-    JNIEnv *env, jclass obj, jlong jsiRuntimeRef, jobject jsCallInvokerHolder)
-{
+    JNIEnv *env, jclass obj, jlong jsiRuntimeRef, jobject jsCallInvokerHolder) {
   auto jsiRuntime{reinterpret_cast<jsi::Runtime *>(jsiRuntimeRef)};
   auto jsCallInvoker{jni::alias_ref<react::CallInvokerHolder::javaobject>{
       reinterpret_cast<react::CallInvokerHolder::javaobject>(

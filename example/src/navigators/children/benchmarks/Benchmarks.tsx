@@ -1,15 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import type { RootStackParamList } from '../../RootProps';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { bip39 } from '@ronickg/react-native-bip39';
-
-// function getTime(f: () => void): number {
-//   const before = global.performance.now();
-//   f();
-//   const after = global.performance.now();
-//   return after - before;
-// }
 
 function getTime(f: () => void, iterations: number = 100): number {
   let total = 0;
@@ -58,7 +51,13 @@ export const Benchmarks: React.FC<BenchmarksProps> = () => {
       <Button
         title="Benchmark"
         onPress={() => {
-          startBenchmarking();
+          const start = performance.now();
+          const mn =
+            'potato long eager spell catch glare crush clump filter polar such capable true afford shoulder survey amateur shuffle oppose brave bitter amount nice talent';
+          bip39.mnemonicToSeed(mn);
+
+          const end = performance.now();
+          console.log(`Creating a Wallet took ${end - start} ms.`);
         }}
       />
     </View>
