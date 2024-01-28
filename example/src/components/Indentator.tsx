@@ -12,7 +12,7 @@ export const Indentator: React.FC<IndentatorProps> = ({
 }: IndentatorProps) => {
   return (
     <View style={styles.container}>
-      <View style={{ width: indentation * 40 }} />
+      <View style={{ width: indentation * 20 }} />
       <View style={styles.result}>{children}</View>
     </View>
   );

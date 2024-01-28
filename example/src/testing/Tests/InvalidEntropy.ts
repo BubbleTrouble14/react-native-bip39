@@ -14,32 +14,31 @@ function hexStringToByteArray(hexString: string) {
   return byteArray;
 }
 
-export function registerInvalidEntropy() {
-  describe('Invalid Entropy Tests', function () {
-    it('throws for empty entropy', function () {
-      try {
-        expect(() =>
-          bip39.entropyToMnemonic(hexStringToByteArray(''))
-        ).to.throw(TypeError, /Invalid entropy/);
-      } catch (e) {}
-    });
-
-    it("throws for entropy that's not a multitude of 4 bytes", function () {
-      try {
-        expect(() =>
-          bip39.entropyToMnemonic(hexStringToByteArray('000000'))
-        ).to.throw(TypeError, /Invalid entropy/);
-      } catch (e) {}
-    });
-
-    it('throws for entropy that is larger than 1024', function () {
-      try {
-        expect(() =>
-          bip39.entropyToMnemonic(
-            hexStringToByteArray(new Array(1028 + 1).join('00'))
-          )
-        ).to.throw(TypeError, /Invalid entropy/);
-      } catch (e) {}
-    });
+describe('Invalid Entropy', function () {
+  it('throws for empty entropy', function () {
+    try {
+      expect(() => bip39.entropyToMnemonic(hexStringToByteArray(''))).to.throw(
+        TypeError,
+        /Invalid entropy/
+      );
+    } catch (e) {}
   });
-}
+
+  it("throws for entropy that's not a multitude of 4 bytes", function () {
+    try {
+      expect(() =>
+        bip39.entropyToMnemonic(hexStringToByteArray('000000'))
+      ).to.throw(TypeError, /Invalid entropy/);
+    } catch (e) {}
+  });
+
+  it('throws for entropy that is larger than 1024', function () {
+    try {
+      expect(() =>
+        bip39.entropyToMnemonic(
+          hexStringToByteArray(new Array(1028 + 1).join('00'))
+        )
+      ).to.throw(TypeError, /Invalid entropy/);
+    } catch (e) {}
+  });
+});

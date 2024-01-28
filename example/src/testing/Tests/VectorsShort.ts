@@ -16,8 +16,7 @@ function hexStringToByteArray(hexString: string) {
   return byteArray;
 }
 
-export function registerVectorsShort() {
-  // We need to monkey patch sscrypto to use all the crypto functions from quick-crypto
+describe('Vectors Short', function () {
   function testVector(
     description: string,
     wordlist: WordLists | undefined,
@@ -29,41 +28,20 @@ export function registerVectorsShort() {
     var vmnemonic = v[1]!;
     var vseedHex = v[2]!;
 
-    describe(
+    it(
       'Test Vector for ' + description + '(' + i + '): ' + ventropy,
       function () {
-        it('mnemonicToEntropy returns correct entropy', function () {
-          expect(bip39.mnemonicToEntropy(vmnemonic, wordlist)).to.equal(
-            ventropy
-          );
-        });
-
-        it('mnemonicToSeedHex returns correct seed hex', async function () {
-          const seedHex = bip39.mnemonicToSeedHex(vmnemonic, password);
-          expect(seedHex).to.equal(vseedHex);
-        });
-
-        it('mnemonicToSeed returns correct seed buffer', async function () {
-          const seed = bip39.mnemonicToSeed(vmnemonic, password);
-          expect(Buffer.from(seed).toString('hex')).to.equal(vseedHex);
-        });
-
-        it('entropyToMnemonic returns correct mnemonic', function () {
-          expect(bip39.entropyToMnemonic(ventropy, wordlist)).to.equal(
-            vmnemonic
-          );
-        });
-
-        it('generateMnemonic returns RNG entropy unmodified', function () {
-          const rng = hexStringToByteArray(ventropy);
-          expect(bip39.generateMnemonic(undefined, rng, wordlist)).to.equal(
-            vmnemonic
-          );
-        });
-
-        it('validateMnemonic returns true for valid mnemonic', function () {
-          expect(bip39.validateMnemonic(vmnemonic, wordlist)).to.be.true;
-        });
+        expect(bip39.mnemonicToEntropy(vmnemonic, wordlist)).to.equal(ventropy);
+        const seedHex = bip39.mnemonicToSeedHex(vmnemonic, password);
+        expect(seedHex).to.equal(vseedHex);
+        const seed = bip39.mnemonicToSeed(vmnemonic, password);
+        expect(Buffer.from(seed).toString('hex')).to.equal(vseedHex);
+        expect(bip39.entropyToMnemonic(ventropy, wordlist)).to.equal(vmnemonic);
+        const rng = hexStringToByteArray(ventropy);
+        expect(bip39.generateMnemonic(undefined, rng, wordlist)).to.equal(
+          vmnemonic
+        );
+        expect(bip39.validateMnemonic(vmnemonic, wordlist)).to.be.true;
       }
     );
   }
@@ -71,7 +49,8 @@ export function registerVectorsShort() {
   vectors.english.forEach((v, i) => {
     testVector('English', undefined, 'TREZOR', v, i);
   });
+
   vectors.japanese.forEach(function (v, i) {
     testVector('Japanese', 'japanese', '㍍ガバヴァぱばぐゞちぢ十人十色', v, i);
   });
-}
+});

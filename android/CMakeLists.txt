@@ -17,10 +17,8 @@ if(${JS_RUNTIME} STREQUAL "hermes")
   find_package(hermes-engine REQUIRED CONFIG)
 endif()
 
-# file(GLOB_RECURSE SOURCES_COMMON CONFIGURE_DEPENDS "../cpp/**.cpp")
 file(GLOB_RECURSE SOURCES_COMMON CONFIGURE_DEPENDS
     "../cpp/**.cpp"
-    # "./bip39_cpp/src/**.cpp"
 )
 
 add_library(

@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     borderWidth: 1,
-    borderColor: '#b3b3b3',
-    margin: 10,
+    // margin: 10,
     flexDirection: 'column',
+    borderColor: '#bdbdbd',
     borderRadius: 5,
     padding: 5,
   },
