@@ -1,6 +1,6 @@
 {
   "name": "@ronickg/react-native-bip39",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "bip39",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
