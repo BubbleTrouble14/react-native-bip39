@@ -46,11 +46,21 @@ describe('Vectors Short', function () {
     );
   }
 
-  vectors.english.forEach((v, i) => {
-    testVector('English', undefined, 'TREZOR', v, i);
+  describe('English', function () {
+    vectors.english.forEach((v, i) => {
+      testVector('English', undefined, 'TREZOR', v, i);
+    });
   });
 
-  vectors.japanese.forEach(function (v, i) {
-    testVector('Japanese', 'japanese', '㍍ガバヴァぱばぐゞちぢ十人十色', v, i);
+  describe('Japanese', function () {
+    vectors.japanese.forEach(function (v, i) {
+      testVector(
+        'Japanese',
+        'japanese',
+        '㍍ガバヴァぱばぐゞちぢ十人十色',
+        v,
+        i
+      );
+    });
   });
 });

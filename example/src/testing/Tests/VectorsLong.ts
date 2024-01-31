@@ -19,43 +19,48 @@ function hexStringToByteArray(hexString: string) {
 describe('Vectors Long', function () {
   function checkList(wordlist: WordLists, vectors: string[]): void {
     vectors.forEach((v, i) => {
-      // describe(
-      //   'Test Vector for ' + wordlist + '(' + i + '): ' + v[0],
-      //   function () {
-      var ventropy = v[0]!;
-      var vmnemonic = v[1]!;
-      var vseedHex = v[2]!;
+      describe(
+        'Test Vector for ' + wordlist + '(' + i + '): ' + v[0],
+        function () {
+          var ventropy = v[0]!;
+          var vmnemonic = v[1]!;
+          var vseedHex = v[2]!;
 
-      it('mnemonicToEntropy returns correct entropy', function () {
-        expect(bip39.mnemonicToEntropy(vmnemonic, wordlist)).to.equal(ventropy);
-      });
+          it('mnemonicToEntropy returns correct entropy', function () {
+            expect(bip39.mnemonicToEntropy(vmnemonic, wordlist)).to.equal(
+              ventropy
+            );
+          });
 
-      it('mnemonicToSeedHex returns correct seed hex', async function () {
-        const seedHex = bip39.mnemonicToSeedHex(vmnemonic, 'TREZOR');
-        expect(seedHex).to.equal(vseedHex);
-      });
+          it('mnemonicToSeedHex returns correct seed hex', async function () {
+            const seedHex = bip39.mnemonicToSeedHex(vmnemonic, 'TREZOR');
+            expect(seedHex).to.equal(vseedHex);
+          });
 
-      it('mnemonicToSeed returns correct seed buffer', async function () {
-        const seed = bip39.mnemonicToSeed(vmnemonic, 'TREZOR');
-        expect(Buffer.from(seed).toString('hex')).to.equal(vseedHex);
-      });
+          it('mnemonicToSeed returns correct seed buffer', async function () {
+            const seed = bip39.mnemonicToSeed(vmnemonic, 'TREZOR');
+            expect(Buffer.from(seed).toString('hex')).to.equal(vseedHex);
+          });
 
-      it('entropyToMnemonic returns correct mnemonic', function () {
-        expect(bip39.entropyToMnemonic(ventropy, wordlist)).to.equal(vmnemonic);
-      });
+          it('entropyToMnemonic returns correct mnemonic', function () {
+            expect(bip39.entropyToMnemonic(ventropy, wordlist)).to.equal(
+              vmnemonic
+            );
+          });
 
-      it('generateMnemonic returns RNG entropy unmodified', function () {
-        const rng = hexStringToByteArray(ventropy);
-        expect(bip39.generateMnemonic(undefined, rng, wordlist)).to.equal(
-          vmnemonic
-        );
-      });
+          it('generateMnemonic returns RNG entropy unmodified', function () {
+            const rng = hexStringToByteArray(ventropy);
+            expect(bip39.generateMnemonic(undefined, rng, wordlist)).to.equal(
+              vmnemonic
+            );
+          });
 
-      it('validateMnemonic returns true for valid mnemonic', function () {
-        expect(bip39.validateMnemonic(vmnemonic, wordlist)).to.be.true;
-      });
+          it('validateMnemonic returns true for valid mnemonic', function () {
+            expect(bip39.validateMnemonic(vmnemonic, wordlist)).to.be.true;
+          });
+        }
+      );
     });
-    // });
   }
 
   for (const lang in vectors1) {

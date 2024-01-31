@@ -13,7 +13,7 @@ import Checkbox from '../../../components/Checkbox';
 import { Suite } from '../../../components/Suite';
 import type { RootStackParamList } from '../../RootProps';
 import { Indentator } from '../../../components/Indentator';
-import { FlashList } from '@shopify/flash-list';
+// import { FlashList } from '@shopify/flash-list';
 import ResultItem from '../../../components/ResultItem';
 
 type TestingScreenProps = NativeStackScreenProps<
@@ -64,7 +64,7 @@ export const TestingScreen: React.FC<TestingScreenProps> = ({
           <Text style={styles.showMenuLabel}>Show Passed</Text>
         </TouchableOpacity>
       </View>
-      {/* <ScrollView
+      <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
       >
@@ -100,8 +100,8 @@ export const TestingScreen: React.FC<TestingScreenProps> = ({
             </Indentator>
           );
         })}
-      </ScrollView> */}
-      <FlashList
+      </ScrollView>
+      {/* <FlashList
         data={results}
         contentContainerStyle={{ paddingHorizontal: 5 }}
         renderItem={({ item }) => {
@@ -126,7 +126,7 @@ export const TestingScreen: React.FC<TestingScreenProps> = ({
           return item.type === 'grouping' ? 'sectionHeader' : 'row';
         }}
         estimatedItemSize={100}
-      />
+      /> */}
     </SafeAreaView>
   );
 };

@@ -37,20 +37,6 @@ export const useTestList = (): [
     },
     [setSuites]
   );
-  // const toggle = useCallback(
-  //   (description: string) => {
-  //     setSuites((tests) => {
-  //       tests[description]!.value = !tests[description]!.value;
-  //       console.log(
-  //         tests,
-  //         !tests[description]!.value,
-  //         (tests[description]!.value = !tests[description]!.value)
-  //       );
-  //       return tests;
-  //     });
-  //   },
-  //   [setSuites]
-  // );
 
   const clearAll = useCallback(() => {
     setSuites((suites) => {

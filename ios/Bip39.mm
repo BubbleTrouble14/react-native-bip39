@@ -12,7 +12,6 @@
 RCT_EXPORT_MODULE()
 
 - (void)invalidate {
-  RNBip39::JsiBip39Api::invalidateInstance();
   _bridge = nil;
 }
 

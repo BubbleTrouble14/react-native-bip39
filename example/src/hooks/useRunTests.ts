@@ -55,6 +55,37 @@ export const useRunTests = (): [
   return [results, runTests, abortTests];
 };
 
+function processSuite(
+  suite: MochaTypes.Suite,
+  tests: Suites,
+  topLevelSuiteName: string = '',
+  parentSkipped: boolean = false
+) {
+  // Determine the top-level suite name when first called
+  if (!topLevelSuiteName) {
+    topLevelSuiteName = suite.title;
+  }
+
+  let skipThisSuite = parentSkipped || !tests[topLevelSuiteName]?.value;
+
+  // Skip or reset tests based on the skipThisSuite flag
+  suite.tests.forEach((test) => {
+    try {
+      if (skipThisSuite) {
+        test.skip();
+      } else {
+        // @ts-expect-error - handle potential TypeScript error
+        test.reset();
+      }
+    } catch (e) {} // do nothing with error
+  });
+
+  // Recursively apply this logic to all nested suites
+  suite.suites.forEach((nestedSuite) => {
+    processSuite(nestedSuite, tests, topLevelSuiteName, skipThisSuite);
+  });
+}
+
 const run = (
   addTestResult: (testResult: TestResult) => void,
   tests: Suites = {}
@@ -75,41 +106,8 @@ const run = (
   var runner = new Mocha.Runner(rootSuite) as MochaTypes.Runner;
   runner.stats = stats;
 
-  // enable/disable tests based on checkbox value
-  // enable/disable tests based on checkbox value
-  runner.suite.suites.forEach((suite) => {
-    const suiteName = suite.title;
-    if (!tests[suiteName]?.value) {
-      console.log(`skipping tests in '${suiteName}' suite`);
-      suite.tests.forEach((test) => {
-        try {
-          test.skip();
-        } catch (e) {} // do nothing w error
-      });
-    } else {
-      console.log(`will run '${suiteName}' suite`);
-      // No additional action needed for tests that should run
-    }
-  });
-
-  // enable/disable tests based on checkbox value
   runner.suite.suites.map((s) => {
-    const suiteName = s.title;
-    if (!tests[suiteName]?.value) {
-      // console.log(`skipping '${suiteName}' suite`);
-
-      s.tests.map((t) => {
-        try {
-          t.skip();
-        } catch (e) {} // do nothing w error
-      });
-    } else {
-      // console.log(`will run '${suiteName}' suite`);
-      s.tests.map((t) => {
-        // @ts-expect-error - not sure why this is erroring
-        t.reset();
-      });
-    }
+    processSuite(s, tests); // apply the skipping logic
   });
 
   let indents = -1;
@@ -144,7 +142,7 @@ const run = (
         type: 'correct',
         indentation: indents,
       });
-      console.log(`${indent()}pass: ${test.fullTitle()}`);
+      // console.log(`${indent()}pass: ${test.fullTitle()}`);
     })
     .on(EVENT_TEST_FAIL, (test: MochaTypes.Runnable, err: Error) => {
       stats.failures++;

@@ -63,13 +63,12 @@ static std::string HexStr(const std::vector<uint8_t>& data) {
 
 class JsiBip39Api : public RNJsi::JsiHostObject {
 public:
-  static const char* Bip39Name;
+  explicit JsiBip39Api(facebook::jsi::Runtime& runtime) : _wordlist(std::make_shared<std::string>("english")) {}
+
   static void installApi(jsi::Runtime& runtime);
-  static void invalidateInstance();
-  static std::shared_ptr<JsiBip39Api> getInstance();
 
   JSI_HOST_FUNCTION(getDefaultWordlist) {
-    return jsi::String::createFromUtf8(runtime, _wordlist);
+    return jsi::String::createFromUtf8(runtime, *_wordlist);
   };
 
   JSI_HOST_FUNCTION(setDefaultWordlist) {
@@ -88,7 +87,7 @@ public:
       throw jsi::JSError(runtime, "Invalid lang name");
     }
 
-    _wordlist = lang;
+    *_wordlist = lang;
     return jsi::Value::undefined();
   };
   // Generate mnemonic
@@ -96,7 +95,7 @@ public:
     // Default values
     int wordCount = 12; // Default entropy size
     std::vector<uint8_t> ent;
-    std::string wordlist = _wordlist;
+    std::string wordlist = *_wordlist;
 
     // Check and set the entropy size if provided
     if (count > 0 && arguments[0].isNumber()) {
@@ -141,7 +140,7 @@ public:
 
   // Validate mnemonic
   JSI_HOST_FUNCTION(validateMnemonic) {
-    std::string wordlist = _wordlist;
+    std::string wordlist = *_wordlist;
 
     if (count > 0) {
       if (!arguments[0].isString()) {
@@ -171,7 +170,7 @@ public:
 
   // Convert mnemonic to entropy
   JSI_HOST_FUNCTION(mnemonicToEntropy) {
-    std::string wordlist = _wordlist; // Default wordlist
+    std::string wordlist = *_wordlist; // Default wordlist
 
     if (count > 0) {
       if (!arguments[0].isString()) {
@@ -208,7 +207,7 @@ public:
 
   // Convert entropy to mnemonic
   JSI_HOST_FUNCTION(entropyToMnemonic) {
-    std::string wordlist = _wordlist; // Default wordlist
+    std::string wordlist = *_wordlist; // Default wordlist
     std::vector<uint8_t> entropy;
 
     if (count > 0) {
@@ -295,10 +294,9 @@ public:
                        JSI_EXPORT_FUNC(JsiBip39Api, mnemonicToEntropy), JSI_EXPORT_FUNC(JsiBip39Api, entropyToMnemonic),
                        JSI_EXPORT_FUNC(JsiBip39Api, mnemonicToSeed), JSI_EXPORT_FUNC(JsiBip39Api, mnemonicToSeedHex));
 
-  JsiBip39Api() : JsiHostObject(), _wordlist("english") {}
+  // JsiBip39Api() : JsiHostObject(), _wordlist("english") {}
 
 private:
-  std::string _wordlist;
-  static std::shared_ptr<JsiBip39Api> instance;
+  std::shared_ptr<std::string> _wordlist;
 };
 } // namespace RNBip39
