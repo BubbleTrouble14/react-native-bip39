@@ -1,47 +1,30 @@
 package com.bip39;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
+import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.module.annotations.ReactModule;
-import com.facebook.react.module.model.ReactModuleInfo;
-import com.facebook.react.module.model.ReactModuleInfoProvider;
-import com.facebook.react.TurboReactPackage;
-import com.facebook.react.turbomodule.core.interfaces.TurboModule;
+import com.facebook.react.uimanager.ViewManager;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
+import java.util.List;
 
-public class Bip39Package extends TurboReactPackage {
+public class Bip39Package implements ReactPackage {
 
-  @Nullable
-  @Override
-  public NativeModule getModule(String name, ReactApplicationContext reactContext) {
-    if (name.equals(Bip39Module.NAME)) {
-      return new Bip39Module(reactContext);
-    } else {
-      return null;
-    }
+  static {
+    System.loadLibrary("rnbip39");
   }
 
+  @NonNull
   @Override
-  public ReactModuleInfoProvider getReactModuleInfoProvider() {
-    return () -> {
-      final Map<String, ReactModuleInfo> moduleInfos = new HashMap<>();
-      Class<? extends NativeModule> moduleClass = Bip39Module.class;
-      ReactModule reactModule = moduleClass.getAnnotation(ReactModule.class);
-      moduleInfos.put(
-              reactModule.name(),
-              new ReactModuleInfo(
-                  reactModule.name(),
-                  moduleClass.getName(),
-                  true,
-                  reactModule.needsEagerInit(),
-                  reactModule.hasConstants(),
-                  reactModule.isCxxModule(),
-                  TurboModule.class.isAssignableFrom(moduleClass)));
-      return moduleInfos;
-    };
+  public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
+    return Collections.singletonList(new Bip39Module(reactContext));
+  }
+
+  @NonNull
+  @Override
+  public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
+    return Collections.emptyList();
   }
 }

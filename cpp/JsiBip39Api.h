@@ -63,7 +63,7 @@ static std::string HexStr(const std::vector<uint8_t>& data) {
 
 class JsiBip39Api : public RNJsi::JsiHostObject {
 public:
-  explicit JsiBip39Api(facebook::jsi::Runtime& runtime) : _wordlist(std::make_shared<std::string>("english")) {}
+  explicit JsiBip39Api() : _wordlist(std::make_shared<std::string>("english")) {}
 
   static void installApi(jsi::Runtime& runtime);
 
@@ -82,7 +82,7 @@ public:
 
     std::string lang = arguments[0].asString(runtime).utf8(runtime);
 
-    auto it = bip39::langs.find(lang);
+    // auto it = bip39::langs.find(lang);
     if (!bip39::utils::LangExists(lang)) {
       throw jsi::JSError(runtime, "Invalid lang name");
     }

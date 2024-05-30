@@ -1,31 +1,39 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
+import type { IBip39Native } from './types';
+import type { UnsafeObject } from 'react-native/Libraries/Types/CodegenTypes';
+import { ModuleNotFoundError } from './ModuleNotFoundError';
 
-export interface Spec extends TurboModule {
-  install(): boolean;
+if (__DEV__) {
+  console.log('Loading react-native-bip39...');
 }
 
-const Bip39Installer = TurboModuleRegistry.getEnforcing<Spec>('Bip39');
+export interface Spec extends TurboModule {
+  /**
+   * Create a new instance of the Bip39 API.
+   * The returned {@linkcode UnsafeObject} is a `jsi::HostObject`.
+   */
+  createBip39Api(): UnsafeObject;
+}
 
-console.log('Loading react-native-bip39...');
+let module: Spec;
+try {
+  // Try to find the CxxTurboModule.
+  // CxxTurboModules can be autolinked on Android starting from react-native 0.74,
+  // and are manually linked in Bip39OnLoad.mm on iOS.
+  module = TurboModuleRegistry.getEnforcing<Spec>('Bip39Cxx');
+} catch (e) {
+  // User didn't enable new arch, or the module does not exist.
+  throw new ModuleNotFoundError(e);
+}
 
-if (global.bip39 === undefined || global.bip39 == null) {
-  if (Bip39Installer == null || typeof Bip39Installer.install !== 'function') {
-    console.error(
-      'Native Bip39 Module cannot be found! Make sure you correctly ' +
-        'installed native dependencies and rebuilt your app.'
-    );
-  } else {
-    // Install the module
-    const result = Bip39Installer.install();
-    if (result !== true) {
-      console.error(
-        `Native Bip39 Module failed to correctly install JSI Bindings! Result: ${result}`
-      );
-    } else {
-      console.log('Bip39 loaded successfully');
-    }
-  }
-} else {
-  console.log('react-native-bip39 installed.');
+/**
+ * The Bip39 API.
+ * This object can be shared and accessed from multiple contexts,
+ * however it is advised to not hold unnecessary references to it.
+ */
+export const bip39 = module.createBip39Api() as IBip39Native;
+
+if (__DEV__) {
+  console.log('react-native-bip39 loaded successfully!');
 }

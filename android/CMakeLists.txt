@@ -1,21 +1,25 @@
-project("rnbip39")
-cmake_minimum_required(VERSION 3.8)
-
-set (CMAKE_VERBOSE_MAKEFILE ON)
-set(CMAKE_CXX_STANDARD 17)
-
-if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-  string(APPEND CMAKE_CXX_FLAGS " -DDEBUG")
-endif()
+cmake_minimum_required(VERSION 3.13)
+project(RNBip39)
 
 set(PACKAGE_NAME "rnbip39")
+set(CMAKE_VERBOSE_MAKEFILE ON)
+set(BUILD_DIR ${CMAKE_SOURCE_DIR}/build)
+set(CMAKE_CXX_STANDARD 17)
 
-find_package(fbjni REQUIRED CONFIG)
+add_compile_options(
+        -fexceptions
+        -frtti
+        -std=c++20
+        -Wall
+        -Wpedantic
+        -DFOLLY_NO_CONFIG=1
+        -DLOG_TAG=\"ReactNative\")
+
 find_package(ReactAndroid REQUIRED CONFIG)
-
-if(${JS_RUNTIME} STREQUAL "hermes")
-  find_package(hermes-engine REQUIRED CONFIG)
-endif()
+find_package(fbjni REQUIRED CONFIG)
+find_package(openssl REQUIRED CONFIG)
+find_package(utf8proc REQUIRED CONFIG)
+find_library(LOG_LIB log)
 
 file(GLOB_RECURSE SOURCES_COMMON CONFIGURE_DEPENDS
     "../cpp/**.cpp"
@@ -33,6 +37,7 @@ add_library(
   ../bip39_cpp/src/sha256.cpp
   ../bip39_cpp/src/toolbox.cpp
   ../bip39_cpp/src/langs.cpp
+  "./build/generated/source/codegen/jni/react/renderer/components/RNBip39Spec/RNBip39SpecJSI-generated.cpp"
 )
 
 # Specifies a path to native header files.
@@ -41,60 +46,21 @@ target_include_directories(
   PRIVATE
   ../bip39_cpp/include
   ../cpp
-  "${REACT_NATIVE_DIR}/ReactAndroid/src/main/jni/react/turbomodule"
-  "${REACT_NATIVE_DIR}/ReactCommon"
-  "${REACT_NATIVE_DIR}/ReactCommon/callinvoker"
-  "${REACT_NATIVE_DIR}/ReactCommon/runtimeexecutor"
+  "./build/generated/source/codegen/jni/react/renderer/components/RNBip39Spec"
 )
-
-# build shared lib
-set_target_properties(${PACKAGE_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 target_link_libraries(
   ${PACKAGE_NAME}
-  log
-  android
-)
-
-find_package(openssl REQUIRED CONFIG)
-find_package(utf8proc REQUIRED CONFIG)
-
-target_link_libraries(
-  ${PACKAGE_NAME}
-  ReactAndroid::jsi
-  ReactAndroid::reactnativejni
-  fbjni::fbjni
+  ReactAndroid::turbomodulejsijni
+  ReactAndroid::jsi                      # <-- RN: JSI
+  ReactAndroid::reactnativejni           # <-- RN: React Native JNI bindings
+  ReactAndroid::react_nativemodule_core  # <-- RN: React Native native module core
+  ${LOG_LIB}                             # <-- Logcat logger
+  android                                # <-- Android JNI core
+  fbjni::fbjni                    # <-- fbjni
+  # react_codegen_RNBip39Spec       # <-- Generated Specs from CodeGen
+  # hermes-engine::libhermes        # <-- Hermes Prefab
   openssl::crypto
   openssl::ssl
   utf8proc::utf8proc
 )
-
-
-if(${JS_RUNTIME} STREQUAL "hermes")
-  string(APPEND CMAKE_CXX_FLAGS " -DJS_RUNTIME_HERMES=1")
-
-  # From prefab from module `com.facebook.react:hermes-android`
-  set(HERMES_LIB hermes-engine::libhermes)
-
-  target_link_libraries(
-    ${PACKAGE_NAME}
-    ${HERMES_LIB}
-  )
-
-  if(${HERMES_ENABLE_DEBUGGER})
-    set(HERMES_EXECUTOR_LIB ReactAndroid::hermes_executor)
-
-    target_link_libraries(
-      ${PACKAGE_NAME}
-      ${HERMES_EXECUTOR_LIB}
-    )
-  endif()
-elseif(${JS_RUNTIME} STREQUAL "jsc")
-  string(APPEND CMAKE_CXX_FLAGS " -DJS_RUNTIME_JSC=1")
-
-  set(JSEXECUTOR_LIB ReactAndroid::jscexecutor)
-
-  target_link_libraries(${PACKAGE_NAME} ${JSEXECUTOR_LIB})
-else()
-  message(FATAL_ERROR "Unknown JS runtime ${JS_RUNTIME}.")
-endif()

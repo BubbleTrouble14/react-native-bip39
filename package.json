@@ -174,9 +174,6 @@
   "codegenConfig": {
     "name": "RNBip39Spec",
     "type": "modules",
-    "jsSrcsDir": "src",
-    "android": {
-      "javaPackageName": "com.bip39"
-    }
+    "jsSrcsDir": "src"
   }
 }

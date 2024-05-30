@@ -4,18 +4,18 @@ import type * as MochaTypes from 'mocha';
 import type { Suites } from '../types/TestSuite';
 import { rootSuite } from '../testing/MochaRNAdapter';
 
-import '../testing/Tests/vectorsShort';
-import '../testing/Tests/vectorsLong';
-import '../testing/Tests/wordlist';
-import '../testing/Tests/utf8Passwords';
-import '../testing/Tests/invalidEntropy';
-import '../testing/Tests/validateMnemonic';
+import '../testing/Tests/VectorsShort';
+import '../testing/Tests/VectorsLong';
+import '../testing/Tests/Wordlist';
+import '../testing/Tests/Utf8Passwords';
+import '../testing/Tests/InvalidEntropy';
+import '../testing/Tests/ValidateMnemonic';
 
 export const useTestList = (): [
   Suites,
   (description: string) => void,
   () => void,
-  () => void
+  () => void,
 ] => {
   const [suites, setSuites] = useState<Suites>(getInitialSuites);
 

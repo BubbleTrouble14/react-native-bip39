@@ -11,18 +11,18 @@ import { useNavigation } from '@react-navigation/native';
 import { TestItem } from '../../../components/TestItem';
 import { useTestList } from '../../../hooks/useTestList';
 import { useRunTests } from '../../../hooks/useRunTests';
-import type { Suites } from '../../../types/TestSuite';
+// import type { Suites } from '../../../types/TestSuite';
 
 type EntryProps = NativeStackScreenProps<RootStackParamList, 'Entry'>;
 
-const filterSuites = (suites: Suites): Suites => {
-  return Object.entries(suites).reduce((filteredSuites, [key, suite]) => {
-    if (suite.value) {
-      filteredSuites[key] = suite;
-    }
-    return filteredSuites;
-  }, {} as Suites);
-};
+// const filterSuites = (suites: Suites): Suites => {
+//   return Object.entries(suites).reduce((filteredSuites, [key, suite]) => {
+//     if (suite.value) {
+//       filteredSuites[key] = suite;
+//     }
+//     return filteredSuites;
+//   }, {} as Suites);
+// };
 
 export const Entry: React.FC<EntryProps> = ({}: EntryProps) => {
   const [tests, toggle, clearAll, checkAll] = useTestList();

@@ -1,28 +1,20 @@
-#include <jni.h>
-
 #include <ReactCommon/CallInvokerHolder.h>
+#include <fbjni/fbjni.h>
+#include <jni.h>
 #include <jsi/jsi.h>
 
-#include "JsiBip39Api.h"
-#include "TypedArray.h"
-#include "bit_opts.h"
-#include "langs.h"
-#include "mnemonic.h"
-#include "random.h"
-#include "toolbox.h"
+#include "NativeBip39Module.h"
+#include <ReactCommon/CxxTurboModuleUtils.h>
 
-using namespace facebook; // NOLINT
+using namespace facebook;
 
-extern "C" JNIEXPORT jboolean JNICALL Java_com_bip39_Bip39Module_nativeInstall(
-    JNIEnv *env, jclass obj, jlong jsiRuntimeRef, jobject jsCallInvokerHolder) {
-  auto jsiRuntime{reinterpret_cast<jsi::Runtime *>(jsiRuntimeRef)};
-  auto jsCallInvoker{jni::alias_ref<react::CallInvokerHolder::javaobject>{
-      reinterpret_cast<react::CallInvokerHolder::javaobject>(
-          jsCallInvokerHolder)} -> cthis()
-                         ->getCallInvoker()};
 
-  // Install the bip39 API
-  RNBip39::JsiBip39Api::installApi(*jsiRuntime);
 
-  return true;
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *) {
+  facebook::react::registerCxxModuleToGlobalModuleMap(
+                                                        std::string(facebook::react::NativeBip39Module::kModuleName),
+                                                        [&](std::shared_ptr<facebook::react::CallInvoker> jsInvoker) {
+                                                            return std::make_shared<facebook::react::NativeBip39Module>(jsInvoker);
+                                                        });
+  return JNI_VERSION_1_6;
 }
