@@ -76,7 +76,7 @@ public:
       // auto typedArray = getTypedArray(runtime, object);
       auto buffer = arguments[1].asObject(runtime).getArrayBuffer(runtime);
 
-      ent = arrayBufferToVector(buffer, runtime);
+      ent = ArrayBufferToVector(buffer, runtime);
     } else {
       // generate entropy
       int bits_ent = bip39::Mnemonic::GetEntBitsByNumMnemonicSentences(wordCount);
@@ -184,7 +184,7 @@ public:
         entropy = HexToBytes(entropyHex); // Convert hex string to bytes
       } else if (arguments[0].asObject(runtime).isArrayBuffer(runtime)) {
         auto buffer = arguments[0].asObject(runtime).getArrayBuffer(runtime);
-        entropy = arrayBufferToVector(buffer, runtime); // Use the Uint8Array directly as bytes
+        entropy = ArrayBufferToVector(buffer, runtime); // Use the Uint8Array directly as bytes
       } else {
         throw jsi::JSError(runtime, "First argument must be a string or a Uint8Array!");
       }

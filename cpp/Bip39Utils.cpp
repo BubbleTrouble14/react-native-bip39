@@ -40,7 +40,7 @@ std::string HexStr(const std::vector<uint8_t>& data) {
   return s.str();
 }
 
-std::vector<uint8_t> arrayBufferToVector(const jsi::ArrayBuffer& buffer, jsi::Runtime& runtime) {
+std::vector<uint8_t> ArrayBufferToVector(const jsi::ArrayBuffer& buffer, jsi::Runtime& runtime) {
   size_t size = buffer.size(runtime);
   uint8_t* dataPtr = buffer.data(runtime);
   std::vector<uint8_t> vec(dataPtr, dataPtr + size);

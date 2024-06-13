@@ -936,7 +936,7 @@ PODS:
   - React-Mapbuffer (0.74.1):
     - glog
     - React-debug
-  - react-native-bip39 (0.0.5):
+  - react-native-bip39 (1.0.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1564,7 +1564,7 @@ SPEC CHECKSUMS:
   React-jsitracing: 233d1a798fe0ff33b8e630b8f00f62c4a8115fbc
   React-logger: 7e7403a2b14c97f847d90763af76b84b152b6fce
   React-Mapbuffer: 11029dcd47c5c9e057a4092ab9c2a8d10a496a33
-  react-native-bip39: 370c0d1101b5daeba08ecd483d0545db8db7dfd1
+  react-native-bip39: 005b5592f0aa9bc3c1fa874cd16d67bc1bbb7a08
   react-native-quick-base64: 792444648d6f046fdd8c207140cb654c51f6cbce
   react-native-safe-area-context: 7f54ad0a774de306ab790c70d9d950321e5c5449
   React-nativeconfig: b0073a590774e8b35192fead188a36d1dca23dec
