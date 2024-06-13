@@ -1,3 +1,7 @@
+// Copied
+// https://github.com/margelo/react-native-worklets-core/blob/feat/cxxturbomodule/package/src/ModuleNotFoundError.ts
+// Credits to mrousavy
+
 import { NativeModules, Platform } from 'react-native';
 
 declare global {
@@ -36,7 +40,9 @@ export class ModuleNotFoundError extends Error {
       cause instanceof Error
         ? cause
         : new Error(
-            `Unknown cause! ${typeof cause === 'object' ? JSON.stringify(cause) : cause}`
+            `Unknown cause! ${
+              typeof cause === 'object' ? JSON.stringify(cause) : cause
+            }`
           );
 
     // TurboModule not found, something went wrong!

@@ -17,15 +17,15 @@ export interface IBip39Native {
   setDefaultWordlist: (value: WordLists) => void;
   generateMnemonic: (
     wordCount?: WordCount,
-    rng?: Uint8Array,
+    rng?: ArrayBuffer,
     wordlist?: WordLists
   ) => string;
   validateMnemonic: (mnemonic: string, wordlist?: WordLists) => boolean;
-  mnemonicToSeed: (mnemonic: string, password?: string) => Uint8Array;
+  mnemonicToSeed: (mnemonic: string, password?: string) => ArrayBuffer;
   mnemonicToSeedHex: (mnemonic: string, password?: string) => string;
   mnemonicToEntropy: (mnemonic: string, wordlist?: WordLists) => string;
   entropyToMnemonic: (
-    entropy: string | Uint8Array,
+    entropy: string | ArrayBuffer,
     wordlist?: WordLists
   ) => string;
 }

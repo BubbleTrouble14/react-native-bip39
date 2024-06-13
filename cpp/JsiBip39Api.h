@@ -15,52 +15,17 @@
 #include <utility>
 #include <vector>
 
+#include "Bip39MutableBuffer.h"
+#include "Bip39Utils.h"
 #include "JsiHostObject.h"
-#include "TypedArray.h"
 #include "bit_opts.h"
 #include "langs.h"
 #include "mnemonic.h"
 #include "random.h"
 #include "toolbox.h"
-
 namespace RNBip39 {
 
 namespace jsi = facebook::jsi;
-
-static uint8_t char2int(const char input) {
-  if (input >= '0' && input <= '9')
-    return input - '0';
-  if (input >= 'A' && input <= 'F')
-    return input - 'A' + 10;
-  if (input >= 'a' && input <= 'f')
-    return input - 'a' + 10;
-  throw std::invalid_argument("Invalid input string");
-}
-
-static std::vector<uint8_t> HexToBytes(const std::string hex) {
-  if (hex.size() % 2 != 0) {
-    throw std::invalid_argument("Invalid input string, length must be multple of 2");
-  }
-  std::vector<uint8_t> ret = std::vector<uint8_t>();
-  size_t start_at = 0;
-  if (hex.rfind("0x", 0) == 0 || hex.rfind("0x", 0) == 0) {
-    start_at = 2;
-  }
-
-  for (size_t i = start_at; i < hex.size(); i += 2) {
-    ret.push_back(char2int(hex[i]) * 16 + char2int(hex[i + 1]));
-  }
-  return ret;
-}
-
-static std::string HexStr(const std::vector<uint8_t>& data) {
-  std::stringstream s;
-  s << std::hex;
-  for (size_t i = 0; i < data.size(); ++i)
-    s << std::setw(2) << std::setfill('0') << static_cast<int>(data[i]);
-  return s.str();
-}
-
 class JsiBip39Api : public RNJsi::JsiHostObject {
 public:
   explicit JsiBip39Api() : _wordlist(std::make_shared<std::string>("english")) {}
@@ -104,12 +69,14 @@ public:
 
     // Check and set rng data if provided
     if (count > 1 && !arguments[1].isNull() && !arguments[1].isUndefined()) {
-      auto object = arguments[1].asObject(runtime);
-      if (!isTypedArray(runtime, object)) {
-        throw jsi::JSError(runtime, "Second argument must be a Uint8Array representing rng!");
-      }
-      auto typedArray = getTypedArray(runtime, object);
-      ent = typedArray.toVector(runtime);
+      // auto object = arguments[1].asObject(runtime);
+      // if (!isTypedArray(runtime, object)) {
+      //   throw jsi::JSError(runtime, "Second argument must be a Uint8Array representing rng!");
+      // }
+      // auto typedArray = getTypedArray(runtime, object);
+      auto buffer = arguments[1].asObject(runtime).getArrayBuffer(runtime);
+
+      ent = arrayBufferToVector(buffer, runtime);
     } else {
       // generate entropy
       int bits_ent = bip39::Mnemonic::GetEntBitsByNumMnemonicSentences(wordCount);
@@ -215,9 +182,9 @@ public:
       if (arguments[0].isString()) {
         std::string entropyHex = arguments[0].asString(runtime).utf8(runtime);
         entropy = HexToBytes(entropyHex); // Convert hex string to bytes
-      } else if (isTypedArray(runtime, arguments[0].asObject(runtime))) {
-        auto typedArray = getTypedArray(runtime, arguments[0].asObject(runtime));
-        entropy = typedArray.toVector(runtime); // Use the Uint8Array directly as bytes
+      } else if (arguments[0].asObject(runtime).isArrayBuffer(runtime)) {
+        auto buffer = arguments[0].asObject(runtime).getArrayBuffer(runtime);
+        entropy = arrayBufferToVector(buffer, runtime); // Use the Uint8Array directly as bytes
       } else {
         throw jsi::JSError(runtime, "First argument must be a string or a Uint8Array!");
       }
@@ -272,11 +239,12 @@ public:
     auto [mnemonics, password] = processMnemonicAndPasswordArguments(runtime, arguments, count);
 
     auto seed = bip39::Mnemonic::CreateSeedFromMnemonic(mnemonics, password);
-    auto byteArray = TypedArray<TypedArrayKind::Uint8Array>(runtime, seed.size());
-    auto arrayBuffer = byteArray.getBuffer(runtime);
-    memcpy(arrayBuffer.data(runtime), seed.data(), seed.size());
+    // Create a shared buffer for the face template data
+    auto buffer = std::make_shared<Bip39MutableBuffer>(seed.size());
+    std::memcpy(buffer->data(), seed.data(), seed.size());
 
-    return byteArray;
+    // Return as Uint8Array
+    return jsi::ArrayBuffer(runtime, buffer);
   };
 
   // Convert mnemonic to seed in hex format

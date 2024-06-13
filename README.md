@@ -62,12 +62,12 @@ getDefaultWordlist(): WordLists
 ### generateMnemonic
 
 ```typescript
-generateMnemonic(wordCount?: WordCount, rng?: Uint8Array, wordlist?: WordLists): string
+generateMnemonic(wordCount?: WordCount, rng?: ArrayBuffer, wordlist?: WordLists): string
 ```
 
 - **Parameters:**
   - `wordCount` (optional): Number of words in the mnemonic (e.g., 12, 15, 18, 21, or 24). Default is 12.
-  - `rng` (optional): A random number generator represented as a `Uint8Array`.
+  - `rng` (optional): A random number generator represented as a `ArrayBuffer`.
   - `wordlist` (optional): The word list to use (e.g., 'chinese_simplified', 'english', etc.). Default is 'english'.
 - **Returns:** A string representing the generated mnemonic.
 
@@ -85,13 +85,13 @@ validateMnemonic(mnemonic: string, wordlist?: WordLists): boolean
 ### mnemonicToSeed
 
 ```typescript
-mnemonicToSeed(mnemonic: string, password?: string): Uint8Array
+mnemonicToSeed(mnemonic: string, password?: string): ArrayBuffer
 ```
 
 - **Parameters:**
   - `mnemonic`: The mnemonic phrase to convert.
   - `password` (optional): An optional passphrase for additional security.
-- **Returns:** A `Uint8Array` representing the binary seed.
+- **Returns:** A `ArrayBuffer` representing the binary seed.
 
 ### mnemonicToSeedHex
 
@@ -118,7 +118,7 @@ mnemonicToEntropy(mnemonic: string, wordlist?: WordLists): string
 ### entropyToMnemonic
 
 ```typescript
-entropyToMnemonic(entropy: string | Uint8Array, wordlist?: WordLists): string
+entropyToMnemonic(entropy: string | ArrayBuffer, wordlist?: WordLists): string
 ```
 
 - **Parameters:**

@@ -4,16 +4,16 @@ import type { WordLists } from '@ronickg/react-native-bip39';
 import { bip39 } from '@ronickg/react-native-bip39';
 import vectors from './vectors.json';
 
-function hexStringToByteArray(hexString: string) {
+function hexStringToArrayBuffer(hexString: string): ArrayBuffer {
   if (hexString.length % 2 !== 0) {
     throw 'Must have an even number of hex digits to convert to bytes';
-  } /* w w w.  jav  a2 s .  c o  m*/
-  var numBytes = hexString.length / 2;
-  var byteArray = new Uint8Array(numBytes);
-  for (var i = 0; i < numBytes; i++) {
+  }
+  const numBytes = hexString.length / 2;
+  const byteArray = new Uint8Array(numBytes);
+  for (let i = 0; i < numBytes; i++) {
     byteArray[i] = parseInt(hexString.substr(i * 2, 2), 16);
   }
-  return byteArray;
+  return byteArray.buffer;
 }
 
 describe('Vectors Short', function () {
@@ -35,9 +35,10 @@ describe('Vectors Short', function () {
         const seedHex = bip39.mnemonicToSeedHex(vmnemonic, password);
         expect(seedHex).to.equal(vseedHex);
         const seed = bip39.mnemonicToSeed(vmnemonic, password);
+        // console.log(new Uint8Array(seed));
         expect(Buffer.from(seed).toString('hex')).to.equal(vseedHex);
         expect(bip39.entropyToMnemonic(ventropy, wordlist)).to.equal(vmnemonic);
-        const rng = hexStringToByteArray(ventropy);
+        const rng = hexStringToArrayBuffer(ventropy);
         expect(bip39.generateMnemonic(undefined, rng, wordlist)).to.equal(
           vmnemonic
         );
