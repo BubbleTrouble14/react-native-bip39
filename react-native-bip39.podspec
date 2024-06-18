@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.authors      = package["author"]
 
   s.platforms    = { :ios => min_ios_version_supported }
-  s.source       = { :git => "https://github.com/margelo/react-native-bip39.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/bubbletrouble14/react-native-bip39.git", :tag => "#{s.version}" }
 
   s.pod_target_xcconfig = {
     "CLANG_CXX_LANGUAGE_STANDARD" => "c++17",

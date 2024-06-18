@@ -1,9 +1,6 @@
 //
 //  Bip39OnLoad.mm
 //  react-native-bip39
-//
-//  Created by Marc Rousavy on 15.05.24.
-//
 
 #import "NativeBip39Module.h"
 #import <Foundation/Foundation.h>

@@ -30,8 +30,6 @@ class JsiBip39Api : public RNJsi::JsiHostObject {
 public:
   explicit JsiBip39Api() : _wordlist(std::make_shared<std::string>("english")) {}
 
-  static void installApi(jsi::Runtime& runtime);
-
   JSI_HOST_FUNCTION(getDefaultWordlist) {
     return jsi::String::createFromUtf8(runtime, *_wordlist);
   };

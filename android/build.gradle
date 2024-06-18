@@ -65,11 +65,6 @@ static def findNodeModules(baseDir) {
 
 def nodeModules = findNodeModules(projectDir)
 
-repositories {
-  google()
-  mavenCentral()
-}
-
 android {
   compileSdkVersion safeExtGet("compileSdkVersion", 31)
 
@@ -165,6 +160,9 @@ android {
 repositories {
   mavenCentral()
   google()
+  flatDir {
+      dirs 'libs'
+  }
 }
 
 dependencies {
@@ -172,7 +170,7 @@ dependencies {
   implementation "com.facebook.react:react-android:+"
   // https://mvnrepository.com/artifact/com.android.ndk.thirdparty/openssl
   implementation 'com.android.ndk.thirdparty:openssl:1.1.1q-beta-1'
-  implementation fileTree(dir:'libs/',include:['*.aar'])
+  compileOnly fileTree(dir:'libs/',include:['*.aar'])
 }
 
 // Resolves "LOCAL_SRC_FILES points to a missing file, Check that libfb.so exists or that its path is correct".
