@@ -107,7 +107,7 @@ android {
     externalNativeBuild {
       cmake {
         cppFlags "-O2 -frtti -fexceptions -Wall -Wno-unused-variable -fstack-protector-all -DANDROID"
-        arguments "-DANDROID_STL=c++_shared", "-DNODE_MODULES_DIR=${nodeModules}"
+        arguments "-DANDROID_STL=c++_shared"
         abiFilters (*reactNativeArchitectures())
       }
     }
@@ -170,7 +170,7 @@ dependencies {
   implementation "com.facebook.react:react-android:+"
   // https://mvnrepository.com/artifact/com.android.ndk.thirdparty/openssl
   implementation 'com.android.ndk.thirdparty:openssl:1.1.1q-beta-1'
-  compileOnly fileTree(dir:'libs/',include:['*.aar'])
+  implementation 'io.github.cryptorg:utf8proc:2.9.0-beta-1'
 }
 
 // Resolves "LOCAL_SRC_FILES points to a missing file, Check that libfb.so exists or that its path is correct".
